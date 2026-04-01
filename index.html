@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UG Study Hub 🎓</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f0e8;
+    --cream: #f0e9d6;
+    --green: #1a7a4a;
+    --green-light: #25a865;
+    --gold: #c9a84c;
+    --gold-light: #f0cc6e;
+    --red: #c0392b;
+    --card-bg: #141414;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.2rem;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 0.5rem;
+    cursor: pointer;
+  }
+  .nav-logo span { color: var(--white); }
+  .nav-links { display: flex; gap: 0.25rem; }
+  .nav-link {
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: rgba(245,240,232,0.6);
+    border: 1px solid transparent;
+  }
+  .nav-link:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+  .nav-link.active {
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    border-color: rgba(201,168,76,0.25);
+  }
+
+  /* ─── PAGES ─── */
+  .page { display: none; padding-top: 64px; min-height: 100vh; }
+  .page.active { display: block; animation: fadeUp 0.4s ease; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── HOME ─── */
+  .hero {
+    position: relative;
+    padding: 7rem 2rem 5rem;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(26,122,74,0.12) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 999px;
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--gold-light);
+    margin-bottom: 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    position: relative; z-index: 1;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); }
+  .hero p {
+    font-size: 1.1rem;
+    color: rgba(245,240,232,0.6);
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    position: relative; z-index: 1;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .btn-primary {
+    padding: 0.85rem 2rem;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    border: none; border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
+  .btn-outline {
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600; font-size: 0.95rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.4); transform: translateY(-2px); }
+
+  .stats-row {
+    display: flex; justify-content: center; gap: 3rem;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem; font-weight: 800;
+    color: var(--gold);
+    letter-spacing: -0.03em;
+  }
+  .stat-label { font-size: 0.82rem; color: rgba(245,240,232,0.45); margin-top: 0.2rem; }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 4rem 2rem;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .feature-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .feature-card:hover { background: #1c1c1c; }
+  .feature-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+  }
+  .feature-icon.gold { background: rgba(201,168,76,0.12); }
+  .feature-icon.green { background: rgba(26,122,74,0.15); }
+  .feature-icon.blue { background: rgba(59,130,246,0.12); }
+  .feature-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .feature-card p { font-size: 0.88rem; color: rgba(245,240,232,0.5); line-height: 1.6; }
+  .feature-arrow {
+    margin-top: 1.2rem;
+    color: var(--gold);
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+  }
+  .feature-card:hover .feature-arrow { transform: translateX(4px); }
+
+  /* ─── PAST QUESTIONS ─── */
+  .page-header {
+    padding: 3.5rem 2rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .page-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem; font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .page-header p { color: rgba(245,240,232,0.5); font-size: 0.95rem; }
+
+  .search-bar-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 1.5rem;
+  }
+  .search-bar {
+    position: relative;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 0.9rem 1rem 0.9rem 3rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input::placeholder { color: rgba(245,240,232,0.3); }
+  .search-bar input:focus { border-color: rgba(201,168,76,0.4); }
+  .search-icon {
+    position: absolute; left: 1rem; top: 50%;
+    transform: translateY(-50%);
+    color: rgba(245,240,232,0.3); font-size: 1rem;
+  }
+
+  .filter-tabs {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 1.5rem;
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+  }
+  .filter-tab {
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.82rem; font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    color: rgba(245,240,232,0.5);
+    background: transparent;
+    transition: all 0.18s;
+  }
+  .filter-tab:hover, .filter-tab.active {
+    background: rgba(201,168,76,0.1);
+    border-color: rgba(201,168,76,0.3);
+    color: var(--gold-light);
+  }
+
+  .questions-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .q-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: all 0.2s;
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .q-card:hover { border-color: rgba(201,168,76,0.25); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+  .q-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .q-code {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    color: var(--gold);
+  }
+  .q-difficulty {
+    font-size: 0.72rem; font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .diff-easy { background: rgba(26,122,74,0.15); color: #4ade80; }
+  .diff-med  { background: rgba(234,179,8,0.12); color: #facc15; }
+  .diff-hard { background: rgba(192,57,43,0.12); color: #f87171; }
+  .q-title { font-size: 0.9rem; font-weight: 500; line-height: 1.4; color: rgba(245,240,232,0.85); }
+  .q-meta { display: flex; gap: 1rem; }
+  .q-meta span { font-size: 0.78rem; color: rgba(245,240,232,0.35); }
+  .q-card-footer { display: flex; gap: 0.5rem; margin-top: auto; }
+  .btn-download {
+    flex: 1;
+    padding: 0.6rem;
+    background: rgba(26,122,74,0.15);
+    border: 1px solid rgba(26,122,74,0.3);
+    border-radius: 7px;
+    color: #4ade80;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    text-align: center;
+  }
+  .btn-download:hover { background: rgba(26,122,74,0.28); transform: translateY(-1px); }
+  .btn-preview {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: rgba(245,240,232,0.5);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .btn-preview:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+
+  .no-results {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: rgba(245,240,232,0.3);
+    font-size: 0.95rem;
+  }
+
+  /* ─── GPA CALCULATOR ─── */
+  .gpa-layout {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.5rem;
+  }
+  @media (max-width: 700px) { .gpa-layout { grid-template-columns: 1fr; } }
+
+  .gpa-main { display: flex; flex-direction: column; gap: 1rem; }
+
+  .gpa-add-form {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 0.75rem;
+    align-items: end;
+  }
+  @media (max-width: 580px) { .gpa-add-form { grid-template-columns: 1fr 1fr; } }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.78rem; font-weight: 500; color: rgba(245,240,232,0.45); text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-group input,
+  .form-group select {
+    padding: 0.65rem 0.85rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 0;
+  }
+  .form-group input:focus,
+  .form-group select:focus { border-color: rgba(201,168,76,0.4); }
+  .form-group select option { background: #1a1a1a; }
+  .btn-add {
+    padding: 0.65rem 1.25rem;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.88rem;
+    border: none; border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.18s;
+    align-self: flex-end;
+  }
+  .btn-add:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .courses-table-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .courses-table-header {
+    display: grid;
+    grid-template-columns: 1fr 100px 90px 80px 40px;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  .courses-table-header span {
+    font-size: 0.75rem; font-weight: 600;
+    color: rgba(245,240,232,0.35);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .course-row {
+    display: grid;
+    grid-template-columns: 1fr 100px 90px 80px 40px;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background 0.15s;
+  }
+  .course-row:last-child { border-bottom: none; }
+  .course-row:hover { background: rgba(255,255,255,0.02); }
+  .course-name { font-size: 0.9rem; font-weight: 500; }
+  .course-grade-badge {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.88rem;
+    color: var(--gold);
+  }
+  .course-credit { font-size: 0.88rem; color: rgba(245,240,232,0.6); }
+  .course-points { font-size: 0.88rem; color: rgba(245,240,232,0.4); }
+  .btn-remove {
+    background: none;
+    border: none;
+    color: rgba(245,240,232,0.2);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.2rem;
+    border-radius: 4px;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+  .btn-remove:hover { color: var(--red); background: rgba(192,57,43,0.1); }
+  .empty-courses {
+    padding: 3rem;
+    text-align: center;
+    color: rgba(245,240,232,0.2);
+    font-size: 0.9rem;
+  }
+
+  /* GPA sidebar */
+  .gpa-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+  .gpa-result-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    text-align: center;
+    position: sticky; top: 80px;
+  }
+  .gpa-label {
+    font-size: 0.78rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: rgba(245,240,232,0.35);
+    margin-bottom: 0.75rem;
+  }
+  .gpa-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 4.5rem; font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    transition: all 0.3s;
+  }
+  .gpa-class {
+    margin-top: 0.75rem;
+    font-size: 0.88rem; font-weight: 600;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  .class-first   { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .class-upper   { background: rgba(59,130,246,0.12); color: #93c5fd; }
+  .class-lower   { background: rgba(34,197,94,0.12); color: #86efac; }
+  .class-pass    { background: rgba(251,146,60,0.12); color: #fdba74; }
+  .class-fail    { background: rgba(192,57,43,0.12); color: #f87171; }
+  .class-none    { background: rgba(255,255,255,0.05); color: rgba(245,240,232,0.3); }
+
+  .gpa-breakdown {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+  }
+  .gpa-breakdown h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; font-weight: 700;
+    margin-bottom: 1rem;
+    color: rgba(245,240,232,0.6);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .breakdown-row {
+    display: flex; justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-row span:first-child { color: rgba(245,240,232,0.45); }
+  .breakdown-row span:last-child { font-weight: 600; }
+
+  .grading-ref {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .grading-ref h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; font-weight: 700;
+    margin-bottom: 1rem;
+    color: rgba(245,240,232,0.6);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .grade-row {
+    display: flex; justify-content: space-between;
+    padding: 0.35rem 0;
+    font-size: 0.83rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .grade-row:last-child { border-bottom: none; }
+  .grade-letter { font-weight: 700; color: var(--gold); font-family: 'Syne', sans-serif; }
+  .grade-pts { color: rgba(245,240,232,0.5); }
+
+  /* toast */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: #1f2a1f;
+    border: 1px solid rgba(74,222,128,0.3);
+    color: #4ade80;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-size: 0.88rem; font-weight: 500;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    🎓 <span>UG</span> Study Hub
+  </div>
+  <div class="nav-links">
+    <div class="nav-link active" id="nav-home" onclick="showPage('home')">Home</div>
+    <div class="nav-link" id="nav-past" onclick="showPage('past')">Past Questions</div>
+    <div class="nav-link" id="nav-gpa" onclick="showPage('gpa')">GPA Calculator</div>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════ HOME PAGE ═══════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-badge">🏫 University of Ghana Students</div>
+    <h1>Study <em>Smarter</em>,<br>Not Harder.</h1>
+    <p>Access past exam questions, calculate your GPA instantly, and stay on top of your academics — all in one place.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('past')">Browse Past Questions →</button>
+      <button class="btn-outline" onclick="showPage('gpa')">Calculate My GPA</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">120+</div><div class="stat-label">Past Papers</div></div>
+    <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Courses</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Departments</div></div>
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">Always</div></div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card" onclick="showPage('past')">
+      <div class="feature-icon gold">📄</div>
+      <h3>Past Questions</h3>
+      <p>Browse exam papers from ECON, MATH, UGRC, DCIT and more. Filtered by year, department, and difficulty.</p>
+      <div class="feature-arrow">→</div>
+    </div>
+    <div class="feature-card" onclick="showPage('gpa')">
+      <div class="feature-icon green">🧮</div>
+      <h3>GPA Calculator</h3>
+      <p>Calculate your semester or cumulative GPA using the official UG grading scale. Add courses, get instant results.</p>
+      <div class="feature-arrow">→</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon blue">📚</div>
+      <h3>Study Notes <span style="font-size:0.7rem;opacity:0.5;font-weight:400">— coming soon</span></h3>
+      <p>Community-sourced lecture notes and summaries. Upload and share with your fellow students.</p>
+      <div class="feature-arrow" style="color:rgba(245,240,232,0.2)">→</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PAST QUESTIONS PAGE ═══════════ -->
+<div class="page" id="page-past">
+  <div class="page-header">
+    <h2>Past Exam Questions</h2>
+    <p>Download past papers — sorted by course, year, and difficulty.</p>
+  </div>
+
+  <div class="search-bar-wrap">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search by course code or name…" oninput="filterQuestions()">
+    </div>
+  </div>
+
+  <div class="filter-tabs">
+    <div class="filter-tab active" onclick="setFilter('all', this)">All</div>
+    <div class="filter-tab" onclick="setFilter('ECON', this)">Economics</div>
+    <div class="filter-tab" onclick="setFilter('MATH', this)">Mathematics</div>
+    <div class="filter-tab" onclick="setFilter('DCIT', this)">Computing</div>
+    <div class="filter-tab" onclick="setFilter('UGRC', this)">UGRC</div>
+    <div class="filter-tab" onclick="setFilter('BIOL', this)">Biology</div>
+    <div class="filter-tab" onclick="setFilter('CHEM', this)">Chemistry</div>
+  </div>
+
+  <div class="questions-grid" id="questionsGrid"></div>
+</div>
+
+<!-- ═══════════ GPA PAGE ═══════════ -->
+<div class="page" id="page-gpa">
+  <div class="page-header">
+    <h2>GPA Calculator</h2>
+    <p>UG grading scale. Add your courses below — GPA updates live.</p>
+  </div>
+
+  <div class="gpa-layout">
+    <!-- Main -->
+    <div class="gpa-main">
+      <div class="gpa-add-form">
+        <div class="form-group" style="grid-column: span 2">
+          <label>Course Name / Code</label>
+          <input type="text" id="courseName" placeholder="e.g. ECON 101 / Macroeconomics">
+        </div>
+        <div class="form-group">
+          <label>Grade</label>
+          <select id="courseGrade">
+            <option value="4.0">A — 4.0</option>
+            <option value="3.5">B+ — 3.5</option>
+            <option value="3.0">B — 3.0</option>
+            <option value="2.5">C+ — 2.5</option>
+            <option value="2.0">C — 2.0</option>
+            <option value="1.5">D — 1.5</option>
+            <option value="1.0">E — 1.0</option>
+            <option value="0.0">F — 0.0</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Credit Hours</label>
+          <input type="number" id="courseCredits" placeholder="3" min="1" max="6" value="3">
+        </div>
+        <button class="btn-add" onclick="addCourse()">+ Add</button>
+      </div>
+
+      <div class="courses-table-wrap">
+        <div class="courses-table-header">
+          <span>Course</span>
+          <span>Grade</span>
+          <span>Credits</span>
+          <span>Points</span>
+          <span></span>
+        </div>
+        <div id="coursesList">
+          <div class="empty-courses">No courses added yet. Add your first course above ↑</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="gpa-sidebar">
+      <div class="gpa-result-card">
+        <div class="gpa-label">Your GPA</div>
+        <div class="gpa-number" id="gpaDisplay" style="color: var(--gold)">—</div>
+        <div class="gpa-class class-none" id="gpaClass">Add courses to begin</div>
+      </div>
+
+      <div class="gpa-breakdown">
+        <h4>Summary</h4>
+        <div class="breakdown-row"><span>Total Courses</span><span id="totalCourses">0</span></div>
+        <div class="breakdown-row"><span>Total Credit Hours</span><span id="totalCredits">0</span></div>
+        <div class="breakdown-row"><span>Total Grade Points</span><span id="totalPoints">0.0</span></div>
+        <div class="breakdown-row"><span>Semester GPA</span><span id="semGPA">—</span></div>
+      </div>
+
+      <div class="grading-ref">
+        <h4>UG Grading Scale</h4>
+        <div class="grade-row"><span class="grade-letter">A</span><span>Excellent</span><span class="grade-pts">4.0</span></div>
+        <div class="grade-row"><span class="grade-letter">B+</span><span>Very Good</span><span class="grade-pts">3.5</span></div>
+        <div class="grade-row"><span class="grade-letter">B</span><span>Good</span><span class="grade-pts">3.0</span></div>
+        <div class="grade-row"><span class="grade-letter">C+</span><span>Above Average</span><span class="grade-pts">2.5</span></div>
+        <div class="grade-row"><span class="grade-letter">C</span><span>Average</span><span class="grade-pts">2.0</span></div>
+        <div class="grade-row"><span class="grade-letter">D</span><span>Below Average</span><span class="grade-pts">1.5</span></div>
+        <div class="grade-row"><span class="grade-letter">E</span><span>Marginal Fail</span><span class="grade-pts">1.0</span></div>
+        <div class="grade-row"><span class="grade-letter">F</span><span>Fail</span><span class="grade-pts">0.0</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── PAGE NAV ───
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ─── TOAST ───
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── PAST QUESTIONS DATA ───
+const papers = [
+  { code: 'ECON 101', title: 'Principles of Macroeconomics', year: 2023, difficulty: 'med', dept: 'ECON', size: '1.2 MB' },
+  { code: 'ECON 101', title: 'Principles of Macroeconomics', year: 2022, difficulty: 'easy', dept: 'ECON', size: '980 KB' },
+  { code: 'ECON 202', title: 'Intermediate Microeconomics', year: 2023, difficulty: 'hard', dept: 'ECON', size: '1.5 MB' },
+  { code: 'MATH 122', title: 'Calculus for Scientists', year: 2023, difficulty: 'hard', dept: 'MATH', size: '2.1 MB' },
+  { code: 'MATH 122', title: 'Calculus for Scientists', year: 2022, difficulty: 'hard', dept: 'MATH', size: '1.8 MB' },
+  { code: 'MATH 221', title: 'Linear Algebra & Geometry', year: 2023, difficulty: 'med', dept: 'MATH', size: '1.4 MB' },
+  { code: 'DCIT 101', title: 'Introduction to Computing', year: 2023, difficulty: 'easy', dept: 'DCIT', size: '890 KB' },
+  { code: 'DCIT 201', title: 'Data Structures & Algorithms', year: 2023, difficulty: 'hard', dept: 'DCIT', size: '1.7 MB' },
+  { code: 'DCIT 301', title: 'Operating Systems', year: 2022, difficulty: 'med', dept: 'DCIT', size: '1.3 MB' },
+  { code: 'UGRC 110', title: 'Academic Writing I', year: 2023, difficulty: 'easy', dept: 'UGRC', size: '760 KB' },
+  { code: 'UGRC 150', title: 'Critical Thinking & Practical Reasoning', year: 2023, difficulty: 'med', dept: 'UGRC', size: '1.1 MB' },
+  { code: 'BIOL 111', title: 'Cell Biology & Genetics', year: 2023, difficulty: 'med', dept: 'BIOL', size: '1.6 MB' },
+  { code: 'BIOL 211', title: 'Ecology & Evolution', year: 2022, difficulty: 'easy', dept: 'BIOL', size: '1.0 MB' },
+  { code: 'CHEM 101', title: 'General Chemistry I', year: 2023, difficulty: 'hard', dept: 'CHEM', size: '2.0 MB' },
+  { code: 'CHEM 102', title: 'General Chemistry II', year: 2023, difficulty: 'med', dept: 'CHEM', size: '1.5 MB' },
+  { code: 'ECON 305', title: 'Development Economics', year: 2022, difficulty: 'hard', dept: 'ECON', size: '1.9 MB' },
+  { code: 'MATH 323', title: 'Probability & Statistics', year: 2023, difficulty: 'med', dept: 'MATH', size: '1.3 MB' },
+  { code: 'DCIT 401', title: 'Database Management Systems', year: 2023, difficulty: 'med', dept: 'DCIT', size: '1.2 MB' },
+];
+
+let activeFilter = 'all';
+
+function setFilter(f, el) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  filterQuestions();
+}
+
+function filterQuestions() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = papers.filter(p => {
+    const matchDept = activeFilter === 'all' || p.dept === activeFilter;
+    const matchSearch = p.code.toLowerCase().includes(q) || p.title.toLowerCase().includes(q);
+    return matchDept && matchSearch;
+  });
+  renderQuestions(filtered);
+}
+
+function renderQuestions(list) {
+  const grid = document.getElementById('questionsGrid');
+  if (!list.length) {
+    grid.innerHTML = '<div class="no-results">🔍 No papers found. Try a different search or filter.</div>';
+    return;
+  }
+  const diffLabel = { easy: 'Easy', med: 'Medium', hard: 'Hard' };
+  const diffClass = { easy: 'diff-easy', med: 'diff-med', hard: 'diff-hard' };
+  grid.innerHTML = list.map((p, i) => `
+    <div class="q-card" style="animation-delay:${i * 0.04}s">
+      <div class="q-card-top">
+        <div class="q-code">${p.code}</div>
+        <span class="q-difficulty ${diffClass[p.difficulty]}">${diffLabel[p.difficulty]}</span>
+      </div>
+      <div class="q-title">${p.title}</div>
+      <div class="q-meta">
+        <span>📅 ${p.year}</span>
+        <span>📁 ${p.size}</span>
+      </div>
+      <div class="q-card-footer">
+        <button class="btn-download" onclick="downloadPaper('${p.code}', '${p.year}')">⬇ Download</button>
+        <button class="btn-preview" onclick="showToast('Preview coming soon!')">👁</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function downloadPaper(code, year) {
+  showToast(`✅ Downloading ${code} (${year})…`);
+  // Real app: trigger actual file download here
+}
+
+// Init past questions
+renderQuestions(papers);
+
+// ─── GPA CALCULATOR ───
+let courses = [];
+const gradeMap = { '4.0': 'A', '3.5': 'B+', '3.0': 'B', '2.5': 'C+', '2.0': 'C', '1.5': 'D', '1.0': 'E', '0.0': 'F' };
+
+function addCourse() {
+  const name    = document.getElementById('courseName').value.trim();
+  const grade   = parseFloat(document.getElementById('courseGrade').value);
+  const credits = parseFloat(document.getElementById('courseCredits').value);
+
+  if (!name)        { showToast('⚠️ Enter a course name'); return; }
+  if (isNaN(credits) || credits < 1 || credits > 6) { showToast('⚠️ Credits must be 1–6'); return; }
+
+  courses.push({ name, grade, credits, points: grade * credits });
+  document.getElementById('courseName').value = '';
+  document.getElementById('courseCredits').value = '3';
+  renderCourses();
+  updateGPA();
+}
+
+function removeCourse(i) {
+  courses.splice(i, 1);
+  renderCourses();
+  updateGPA();
+}
+
+function renderCourses() {
+  const list = document.getElementById('coursesList');
+  if (!courses.length) {
+    list.innerHTML = '<div class="empty-courses">No courses added yet. Add your first course above ↑</div>';
+    return;
+  }
+  list.innerHTML = courses.map((c, i) => `
+    <div class="course-row">
+      <span class="course-name">${c.name}</span>
+      <span class="course-grade-badge">${gradeMap[c.grade.toFixed(1)] || '—'}</span>
+      <span class="course-credit">${c.credits} cr</span>
+      <span class="course-points">${c.points.toFixed(1)}</span>
+      <button class="btn-remove" onclick="removeCourse(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function updateGPA() {
+  const totalCredits = courses.reduce((s, c) => s + c.credits, 0);
+  const totalPoints  = courses.reduce((s, c) => s + c.points, 0);
+  const gpa = totalCredits > 0 ? totalPoints / totalCredits : null;
+
+  const display = document.getElementById('gpaDisplay');
+  const cls     = document.getElementById('gpaClass');
+
+  document.getElementById('totalCourses').textContent  = courses.length;
+  document.getElementById('totalCredits').textContent  = totalCredits;
+  document.getElementById('totalPoints').textContent   = totalPoints.toFixed(2);
+
+  if (gpa === null) {
+    display.textContent   = '—';
+    display.style.color   = 'var(--gold)';
+    cls.textContent       = 'Add courses to begin';
+    cls.className         = 'gpa-class class-none';
+    document.getElementById('semGPA').textContent = '—';
+    return;
+  }
+
+  display.textContent = gpa.toFixed(2);
+  document.getElementById('semGPA').textContent = gpa.toFixed(2);
+
+  if (gpa >= 3.6)      { display.style.color='var(--gold-light)'; cls.textContent='First Class Honours'; cls.className='gpa-class class-first'; }
+  else if (gpa >= 3.0) { display.style.color='#93c5fd'; cls.textContent='Second Class (Upper)'; cls.className='gpa-class class-upper'; }
+  else if (gpa >= 2.5) { display.style.color='#86efac'; cls.textContent='Second Class (Lower)'; cls.className='gpa-class class-lower'; }
+  else if (gpa >= 2.0) { display.style.color='#fdba74'; cls.textContent='Third Class / Pass'; cls.className='gpa-class class-pass'; }
+  else                 { display.style.color='#f87171'; cls.textContent='Below Pass'; cls.className='gpa-class class-fail'; }
+}
+
+// Enter key for GPA
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('page-gpa').classList.contains('active')) {
+    addCourse();
+  }
+});
+</script>
+</body>
+</html>
