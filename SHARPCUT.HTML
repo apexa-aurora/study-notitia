@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sharp Cut — Premium Barbershop</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --black:#080808;
+  --dark:#0f0f0f;
+  --card:#141414;
+  --card2:#1a1a1a;
+  --gold:#b8953f;
+  --gold-bright:#d4aa55;
+  --gold-pale:#f0d483;
+  --cream:#f2ead8;
+  --white:#ffffff;
+  --muted:#6b6b6b;
+  --border:rgba(184,149,63,0.12);
+}
+
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--cream);font-family:'Outfit',sans-serif;overflow-x:hidden;cursor:none}
+
+/* CUSTOM CURSOR */
+.cursor{
+  position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:99999;transform:translate(-50%,-50%);
+  transition:transform 0.1s ease,width 0.3s,height 0.3s,background 0.3s;
+}
+.cursor-ring{
+  position:fixed;width:36px;height:36px;border:1px solid rgba(184,149,63,0.5);
+  border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);
+  transition:transform 0.15s ease,width 0.3s,height 0.3s,opacity 0.3s;
+}
+a:hover~.cursor,button:hover~.cursor{width:16px;height:16px}
+
+/* NOISE */
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9998;
+}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:2rem 5rem;
+  transition:padding 0.4s,background 0.4s,backdrop-filter 0.4s;
+}
+nav.scrolled{
+  padding:1rem 5rem;
+  background:rgba(8,8,8,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;
+  letter-spacing:0.08em;color:var(--gold-bright);display:flex;align-items:center;gap:0.5rem;
+}
+.nav-logo span{font-size:1.2rem}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center}
+.nav-links a{
+  color:rgba(242,234,216,0.65);text-decoration:none;font-size:0.8rem;
+  letter-spacing:0.12em;text-transform:uppercase;font-weight:500;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--gold-bright)}
+.nav-book{
+  background:transparent;color:var(--gold-bright)!important;
+  border:1px solid var(--gold)!important;padding:0.55rem 1.4rem;
+  border-radius:1px;transition:background 0.25s!important,color 0.25s!important;
+}
+.nav-book:hover{background:var(--gold)!important;color:var(--black)!important}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;position:relative;display:flex;
+  flex-direction:column;justify-content:flex-end;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#1a1208 0%,#080808 50%,#0d0c08 100%);
+}
+.hero-bg-img{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1800&q=80&fit=crop');
+  background-size:cover;background-position:center;
+  opacity:0.18;
+  filter:grayscale(40%);
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to right, rgba(8,8,8,0.97) 40%, rgba(8,8,8,0.6) 70%, rgba(8,8,8,0.3) 100%),
+             linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 50%);
+}
+.hero-content{
+  position:relative;z-index:2;padding:0 5rem 8rem;max-width:700px;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:0.8rem;
+  margin-bottom:2.5rem;
+  animation:fadeUp 1s ease both;
+}
+.hero-tag-line{width:40px;height:1px;background:var(--gold)}
+.hero-tag span{
+  font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+}
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(4.5rem,8vw,8.5rem);
+  font-weight:300;line-height:0.9;
+  margin-bottom:2.5rem;
+  animation:fadeUp 1s ease 0.15s both;
+}
+.hero-title strong{font-weight:700;display:block}
+.hero-title em{font-style:italic;color:var(--gold-bright)}
+.hero-desc{
+  font-size:1rem;line-height:1.9;color:var(--muted);
+  max-width:420px;margin-bottom:3.5rem;font-weight:300;
+  animation:fadeUp 1s ease 0.3s both;
+}
+.hero-actions{
+  display:flex;gap:1.2rem;flex-wrap:wrap;
+  animation:fadeUp 1s ease 0.45s both;
+}
+.btn-gold{
+  display:inline-flex;align-items:center;gap:0.7rem;
+  background:var(--gold);color:var(--black);
+  text-decoration:none;padding:1.1rem 2.5rem;
+  font-weight:600;font-size:0.82rem;letter-spacing:0.12em;
+  text-transform:uppercase;border:2px solid var(--gold);
+  transition:all 0.3s;
+}
+.btn-gold:hover{background:transparent;color:var(--gold);transform:translateY(-2px)}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:0.7rem;
+  background:transparent;color:var(--cream);
+  text-decoration:none;padding:1.1rem 2.5rem;
+  font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;
+  border:1px solid rgba(242,234,216,0.2);transition:all 0.3s;
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+/* HERO SIDE STATS */
+.hero-stats{
+  position:absolute;right:5rem;bottom:8rem;z-index:2;
+  display:flex;flex-direction:column;gap:2rem;
+  animation:fadeUp 1s ease 0.6s both;
+}
+.hero-stat{
+  text-align:right;padding-left:2rem;
+  border-right:1px solid var(--border);
+}
+.hero-stat-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3rem;color:var(--gold-bright);line-height:1;
+}
+.hero-stat-label{
+  font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--muted);margin-top:0.2rem;
+}
+
+/* SCROLL INDICATOR */
+.scroll-indicator{
+  position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  z-index:2;animation:fadeUp 1s ease 0.9s both;
+}
+.scroll-indicator span{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease infinite}
+
+@keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.1)}}
+
+/* ===== MARQUEE ===== */
+.marquee-wrap{
+  background:var(--gold);padding:0.9rem 0;overflow:hidden;
+  border-top:1px solid rgba(0,0,0,0.2);border-bottom:1px solid rgba(0,0,0,0.2);
+}
+.marquee-track{
+  display:flex;gap:3rem;animation:marquee 20s linear infinite;
+  width:max-content;
+}
+.marquee-item{
+  font-family:'Bebas Neue',sans-serif;font-size:1.1rem;
+  letter-spacing:0.15em;color:var(--black);
+  white-space:nowrap;display:flex;align-items:center;gap:1.5rem;
+}
+.marquee-dot{width:5px;height:5px;background:var(--black);border-radius:50%;opacity:0.4}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ===== GALLERY ===== */
+.gallery{padding:7rem 5rem;background:var(--dark)}
+.gallery-header{
+  display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem;
+}
+.eyebrow{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.8rem}
+.eyebrow-line{width:32px;height:1px;background:var(--gold)}
+.eyebrow span{font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.8rem,4.5vw,4rem);font-weight:400;line-height:1.05;
+}
+.section-title em{font-style:italic;color:var(--gold-bright)}
+.gallery-desc{max-width:320px;color:var(--muted);font-size:0.9rem;line-height:1.8;text-align:right}
+
+/* MASONRY-STYLE GRID */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:auto;
+  gap:1.5px;
+  background:var(--border);
+}
+.gallery-item{
+  position:relative;overflow:hidden;
+  background:var(--card);cursor:none;
+}
+.gallery-item:nth-child(1){grid-row:span 2}
+.gallery-item:nth-child(4){grid-column:span 2}
+
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94),filter 0.5s;
+  filter:grayscale(20%)brightness(0.85);
+  display:block;
+  min-height:250px;
+}
+.gallery-item:nth-child(1) img{min-height:520px}
+.gallery-item:nth-child(4) img{min-height:260px}
+
+.gallery-item:hover img{transform:scale(1.06);filter:grayscale(0%)brightness(1)}
+
+.gallery-item-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,8,8,0.9) 0%,transparent 50%);
+  opacity:0;transition:opacity 0.4s;
+  display:flex;align-items:flex-end;padding:2rem;
+}
+.gallery-item:hover .gallery-item-overlay{opacity:1}
+.gallery-item-label{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;font-weight:600;color:var(--cream);
+}
+.gallery-item-tag{
+  font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.3rem;
+}
+
+/* ===== SERVICES ===== */
+.services{padding:7rem 5rem;background:var(--black)}
+.services-top{
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;
+  align-items:end;margin-bottom:5rem;
+}
+.services-desc{color:var(--muted);line-height:1.9;font-size:0.95rem;font-weight:300;padding-bottom:0.5rem}
+
+.services-list{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--border);border:1px solid var(--border);
+}
+.service-item{
+  background:var(--card);padding:3rem 2.5rem;
+  position:relative;overflow:hidden;transition:background 0.4s;
+}
+.service-item::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--gold),var(--gold-pale));
+  transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;
+}
+.service-item:hover{background:var(--card2)}
+.service-item:hover::after{transform:scaleX(1)}
+
+.service-num{
+  font-family:'Bebas Neue',sans-serif;font-size:3.5rem;
+  color:rgba(184,149,63,0.08);position:absolute;
+  top:1.5rem;right:2rem;line-height:1;
+}
+.service-icon-wrap{
+  width:48px;height:48px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.8rem;font-size:1.4rem;
+  transition:border-color 0.3s,background 0.3s;
+}
+.service-item:hover .service-icon-wrap{
+  border-color:var(--gold);background:rgba(184,149,63,0.08);
+}
+.service-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-weight:600;margin-bottom:0.6rem;
+}
+.service-desc{font-size:0.82rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;font-weight:300}
+.service-footer{display:flex;justify-content:space-between;align-items:center}
+.service-price{
+  font-family:'Bebas Neue',sans-serif;font-size:2.2rem;
+  color:var(--gold-bright);letter-spacing:0.05em;
+}
+.service-dur{
+  font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);
+}
+.service-book{
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:0.4rem;
+  opacity:0;transition:opacity 0.3s;border-bottom:1px solid transparent;
+  padding-bottom:1px;
+}
+.service-item:hover .service-book{opacity:1;border-bottom-color:var(--gold)}
+
+/* ===== BOOKING SECTION ===== */
+.booking{
+  position:relative;overflow:hidden;
+  padding:0;display:grid;grid-template-columns:1fr 1fr;min-height:600px;
+}
+.booking-img{
+  position:relative;overflow:hidden;
+}
+.booking-img img{
+  width:100%;height:100%;object-fit:cover;
+  filter:grayscale(30%)brightness(0.7);
+}
+.booking-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to right,transparent 60%,var(--black) 100%);
+}
+.booking-content{
+  background:var(--black);display:flex;flex-direction:column;
+  justify-content:center;padding:6rem 5rem 6rem 5rem;
+  position:relative;
+}
+.booking-content::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 70% at 60% 50%,rgba(184,149,63,0.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.booking-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,4.5vw,4.5rem);
+  font-weight:300;line-height:1;margin:1rem 0 1.5rem;
+}
+.booking-title strong{display:block;font-weight:700}
+.booking-title em{font-style:italic;color:var(--gold-bright)}
+.booking-text{
+  color:var(--muted);line-height:1.9;font-size:0.9rem;
+  max-width:380px;margin-bottom:3rem;font-weight:300;
+}
+.wa-btn{
+  display:inline-flex;align-items:center;gap:1rem;
+  background:#25D366;color:#fff;text-decoration:none;
+  padding:1.2rem 2.5rem;font-weight:600;font-size:0.9rem;
+  letter-spacing:0.08em;border:2px solid #25D366;
+  transition:all 0.3s;box-shadow:0 8px 40px rgba(37,211,102,0.2);
+  width:fit-content;
+}
+.wa-btn:hover{
+  background:transparent;color:#25D366;
+  transform:translateY(-3px);
+  box-shadow:0 16px 60px rgba(37,211,102,0.15);
+}
+.wa-btn svg{width:24px;height:24px;fill:currentColor;flex-shrink:0}
+.booking-note{
+  margin-top:1.2rem;font-size:0.75rem;color:var(--muted);
+  letter-spacing:0.08em;display:flex;align-items:center;gap:0.5rem;
+}
+
+/* ===== STYLES SHOWCASE ===== */
+.styles{padding:7rem 5rem;background:var(--dark)}
+.styles-header{text-align:center;margin-bottom:5rem}
+.styles-header .eyebrow{justify-content:center}
+.styles-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);
+}
+.style-card{
+  position:relative;overflow:hidden;background:var(--card);
+  aspect-ratio:3/4;cursor:none;
+}
+.style-card img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94),filter 0.5s;
+  filter:grayscale(30%)brightness(0.75);
+}
+.style-card:hover img{transform:scale(1.08);filter:grayscale(0%)brightness(0.9)}
+.style-card-info{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:2rem 1.5rem 1.8rem;
+  background:linear-gradient(to top,rgba(8,8,8,0.95) 0%,transparent 100%);
+  transform:translateY(4px);transition:transform 0.3s;
+}
+.style-card:hover .style-card-info{transform:translateY(0)}
+.style-card-name{
+  font-family:'Cormorant Garamond',serif;font-size:1.3rem;
+  font-weight:600;margin-bottom:0.3rem;
+}
+.style-card-sub{font-size:0.7rem;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase}
+
+/* ===== WHY ===== */
+.why{padding:7rem 5rem;background:var(--black);display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center}
+.why-features{margin-top:3rem;display:flex;flex-direction:column;gap:0}
+.why-item{
+  padding:2rem 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:1.5rem;
+  transition:padding-left 0.3s;
+}
+.why-item:first-child{border-top:1px solid var(--border)}
+.why-item:hover{padding-left:0.5rem}
+.why-num{
+  font-family:'Bebas Neue',sans-serif;font-size:1.2rem;
+  color:var(--gold);opacity:0.6;flex-shrink:0;line-height:1;margin-top:0.1rem;
+}
+.why-title{font-size:1rem;font-weight:600;margin-bottom:0.4rem}
+.why-text{font-size:0.82rem;color:var(--muted);line-height:1.8;font-weight:300}
+.why-visual{position:relative}
+.why-img-wrap{
+  position:relative;overflow:hidden;
+  border:1px solid var(--border);
+}
+.why-img-wrap img{
+  width:100%;display:block;
+  filter:grayscale(20%)brightness(0.8);
+  transition:transform 0.6s ease,filter 0.5s;
+}
+.why-img-wrap:hover img{transform:scale(1.04);filter:grayscale(0%)brightness(0.9)}
+.why-badge{
+  position:absolute;bottom:-1.5rem;left:-1.5rem;
+  background:var(--gold);color:var(--black);
+  padding:1.5rem;text-align:center;min-width:130px;
+}
+.why-badge-num{
+  font-family:'Bebas Neue',sans-serif;font-size:2.8rem;line-height:1;
+}
+.why-badge-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;margin-top:0.2rem}
+
+/* ===== HOURS ===== */
+.hours{padding:7rem 5rem;background:var(--dark);display:grid;grid-template-columns:1fr 1fr;gap:6rem}
+.hours-table{margin-top:2.5rem}
+.hours-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.2rem 0;border-bottom:1px solid var(--border);
+}
+.hours-row:first-child{border-top:1px solid var(--border)}
+.hours-row.today{background:rgba(184,149,63,0.04);padding:1.2rem 1rem;margin:0 -1rem}
+.hours-day{font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;font-weight:400}
+.hours-time{color:var(--gold-bright);font-size:0.88rem;font-weight:500}
+.hours-closed{color:var(--muted);font-size:0.82rem}
+.contact-cards{margin-top:2.5rem;display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.contact-card{
+  background:var(--card);padding:1.8rem 2rem;
+  display:flex;align-items:center;gap:1.5rem;
+  transition:background 0.2s;
+}
+.contact-card:hover{background:var(--card2)}
+.contact-icon{
+  font-size:1.4rem;width:44px;height:44px;
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.contact-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem}
+.contact-val{font-size:0.9rem;color:var(--cream)}
+.contact-val a{color:#25D366;text-decoration:none;font-weight:500}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials{padding:7rem 5rem;background:var(--black);text-align:center}
+.testimonials .eyebrow{justify-content:center}
+.testimonials-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);margin-top:4rem;
+}
+.testimonial{
+  background:var(--card);padding:2.5rem 2rem;text-align:left;
+  position:relative;transition:background 0.3s;
+}
+.testimonial:hover{background:var(--card2)}
+.testimonial-quote{
+  font-family:'Cormorant Garamond',serif;font-size:1rem;
+  font-style:italic;line-height:1.9;color:rgba(242,234,216,0.8);
+  margin-bottom:1.5rem;font-weight:300;
+}
+.testimonial-author{display:flex;align-items:center;gap:0.8rem}
+.testimonial-avatar{
+  width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold-pale));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-weight:700;font-size:0.9rem;color:var(--black);
+  flex-shrink:0;
+}
+.testimonial-name{font-size:0.82rem;font-weight:600;margin-bottom:0.1rem}
+.testimonial-stars{color:var(--gold);font-size:0.7rem;letter-spacing:0.1em}
+.testimonial-open{
+  font-family:'Cormorant Garamond',serif;font-size:5rem;
+  color:var(--gold);opacity:0.07;position:absolute;top:1rem;right:1.5rem;line-height:1;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  background:var(--card);border-top:1px solid var(--border);
+  padding:4rem 5rem;
+}
+.footer-top{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:4rem;padding-bottom:3rem;border-bottom:1px solid var(--border);margin-bottom:2.5rem;
+}
+.footer-logo{
+  font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;
+  color:var(--gold-bright);margin-bottom:1rem;letter-spacing:0.05em;
+}
+.footer-tagline{font-size:0.82rem;color:var(--muted);line-height:1.8;max-width:220px;font-weight:300}
+.footer-heading{
+  font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.2rem;font-weight:500;
+}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:0.6rem}
+.footer-links a{
+  font-size:0.82rem;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;letter-spacing:0.03em;
+}
+.footer-links a:hover{color:var(--cream)}
+.footer-wa{
+  display:inline-flex;align-items:center;gap:0.8rem;
+  background:#25D366;color:#fff;text-decoration:none;
+  padding:1rem 1.8rem;font-size:0.82rem;font-weight:600;
+  letter-spacing:0.08em;margin-top:1rem;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.footer-wa:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,211,102,0.25)}
+.footer-wa svg{width:18px;height:18px;fill:white}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-size:0.75rem;color:var(--muted)}
+.footer-credit{font-size:0.75rem;color:var(--muted)}
+
+/* FLOAT WA */
+.float-wa{
+  position:fixed;bottom:2.5rem;right:2.5rem;z-index:500;
+  background:#25D366;color:#fff;
+  width:58px;height:58px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  box-shadow:0 4px 24px rgba(37,211,102,0.35);
+  animation:waPulse 2.5s ease infinite;
+  transition:transform 0.3s;
+}
+.float-wa:hover{transform:scale(1.12)}
+.float-wa svg{width:30px;height:30px;fill:white}
+.float-wa-label{
+  position:absolute;right:calc(100% + 0.8rem);top:50%;transform:translateY(-50%);
+  background:var(--black);color:var(--cream);
+  font-size:0.72rem;letter-spacing:0.08em;padding:0.5rem 0.9rem;
+  white-space:nowrap;border:1px solid var(--border);
+  opacity:0;pointer-events:none;transition:opacity 0.3s;
+}
+.float-wa:hover .float-wa-label{opacity:1}
+
+@keyframes waPulse{
+  0%,100%{box-shadow:0 4px 24px rgba(37,211,102,0.35),0 0 0 0 rgba(37,211,102,0.3)}
+  50%{box-shadow:0 4px 24px rgba(37,211,102,0.5),0 0 0 12px rgba(37,211,102,0)}
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  nav{padding:1.5rem 2rem}
+  nav.scrolled{padding:1rem 2rem}
+  .nav-links{display:none}
+  .hero-content{padding:0 2rem 6rem}
+  .hero-stats{right:2rem;bottom:6rem}
+  .gallery{padding:5rem 2rem}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .gallery-item:nth-child(1){grid-row:auto}
+  .gallery-item:nth-child(4){grid-column:auto}
+  .services{padding:5rem 2rem}
+  .services-top{grid-template-columns:1fr;gap:1rem}
+  .services-list{grid-template-columns:1fr}
+  .booking{grid-template-columns:1fr}
+  .booking-img{height:300px}
+  .booking-img::after{background:linear-gradient(to top,var(--black) 0%,transparent 60%)}
+  .booking-content{padding:4rem 2rem}
+  .styles{padding:5rem 2rem}
+  .styles-grid{grid-template-columns:1fr 1fr}
+  .why{grid-template-columns:1fr;padding:5rem 2rem;gap:3rem}
+  .why-visual{order:-1}
+  .why-badge{left:auto;right:-1rem;bottom:-1rem}
+  .hours{grid-template-columns:1fr;padding:5rem 2rem;gap:3rem}
+  .testimonials{padding:5rem 2rem}
+  .testimonials-grid{grid-template-columns:1fr}
+  footer{padding:3rem 2rem}
+  .footer-top{grid-template-columns:1fr;gap:2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo"><span>✦</span> The Sharp Cut</div>
+  <ul class="nav-links">
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#styles">Styles</a></li>
+    <li><a href="#hours">Hours</a></li>
+    <li><a href="#booking" class="nav-book">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">
+      <div class="hero-tag-line"></div>
+      <span>Premium Barbershop · Est. 2014</span>
+    </div>
+    <h1 class="hero-title">
+      The Art<br>of the
+      <strong><em>Perfect Cut.</em></strong>
+    </h1>
+    <p class="hero-desc">
+      Where precision meets craft. Every cut is a statement — tailored to you, executed with mastery, every single time.
+    </p>
+    <div class="hero-actions">
+      <a href="https://wa.me/233592349968?text=Hi%20The%20Sharp%20Cut!%20I'd%20like%20to%20book%20an%20appointment.%20My%20preferred%20service%20is:" class="btn-gold" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Book via WhatsApp
+      </a>
+      <a href="#services" class="btn-outline">View Services</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">10+</div>
+      <div class="hero-stat-label">Years of Craft</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">500+</div>
+      <div class="hero-stat-label">Happy Clients</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">100%</div>
+      <div class="hero-stat-label">Satisfaction</div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Skin Fade <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Classic Cut <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Beard Sculpt <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Hot Towel Shave <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Taper Fade <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Kids Cut <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Line Up <span class="marquee-dot"></span></div>
+    <div class="marquee-item">The Sharp Cut <span class="marquee-dot"></span></div>
+    <div class="marquee-item">WhatsApp Booking · 0592349968 <span class="marquee-dot"></span></div>
+    <!-- Duplicate for seamless loop -->
+    <div class="marquee-item">Skin Fade <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Classic Cut <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Beard Sculpt <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Hot Towel Shave <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Taper Fade <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Kids Cut <span class="marquee-dot"></span></div>
+    <div class="marquee-item">Line Up <span class="marquee-dot"></span></div>
+    <div class="marquee-item">The Sharp Cut <span class="marquee-dot"></span></div>
+    <div class="marquee-item">WhatsApp Booking · 0592349968 <span class="marquee-dot"></span></div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header">
+    <div>
+      <div class="eyebrow"><div class="eyebrow-line"></div><span>Our Work</span></div>
+      <h2 class="section-title">The <em>Craft</em><br>in Action</h2>
+    </div>
+    <p class="gallery-desc">Every client walks out looking their absolute best. See the work that speaks for itself.</p>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=800&q=85&fit=crop" alt="Barber at work" loading="lazy">
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-item-tag">Featured</div>
+          <div class="gallery-item-label">Master Craftsmanship</div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=700&q=85&fit=crop" alt="Skin fade haircut" loading="lazy">
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-item-tag">Fade</div>
+          <div class="gallery-item-label">Clean Skin Fade</div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=700&q=85&fit=crop" alt="Classic haircut" loading="lazy">
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-item-tag">Classic</div>
+          <div class="gallery-item-label">Precision Cut</div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?w=1000&q=85&fit=crop" alt="Barbershop interior" loading="lazy">
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-item-tag">Our Space</div>
+          <div class="gallery-item-label">Premium Environment</div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?w=700&q=85&fit=crop" alt="Beard trim" loading="lazy">
+      <div class="gallery-item-overlay">
+        <div>
+          <div class="gallery-item-tag">Beard</div>
+          <div class="gallery-item-label">Expert Beard Trim</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-top">
+    <div>
+      <div class="eyebrow"><div class="eyebrow-line"></div><span>Services & Pricing</span></div>
+      <h2 class="section-title">What We <em>Offer</em></h2>
+    </div>
+    <p class="services-desc">Every service is carried out with meticulous care. All appointments are confirmed via WhatsApp — quick, personal, and easy.</p>
+  </div>
+
+  <div class="services-list">
+    <div class="service-item">
+      <div class="service-num">01</div>
+      <div class="service-icon-wrap">💈</div>
+      <div class="service-name">Classic Haircut</div>
+      <p class="service-desc">Precision scissor or clipper cut designed around your face shape and lifestyle. Includes wash, cut, and style.</p>
+      <div class="service-footer">
+        <div>
+          <div class="service-price">GH₵40</div>
+          <div class="service-dur">~30 minutes</div>
+        </div>
+        <a href="https://wa.me/233592349968?text=I'd%20like%20to%20book%20a%20Classic%20Haircut%20please." class="service-book" target="_blank">Book Now →</a>
+      </div>
+    </div>
+
+    <div class="service-item">
+      <div class="service-num">02</div>
+      <div class="service-icon-wrap">⚡</div>
+      <div class="service-name">Skin Fade</div>
+      <p class="service-desc">Seamless blend from bare skin to any length on top. Sharp, modern, and effortlessly clean.</p>
+      <div class="service-footer">
+        <div>
+          <div class="service-price">GH₵50</div>
+          <div class="service-dur">~45 minutes</div>
+        </div>
+        <a href="https://wa.me/233592349968?text=I'd%20like%20to%20book%20a%20Skin%20Fade%20please." class="service-book" target="_blank">Book Now →</a>
+      </div>
+    </div>
+
+    <div class="service-item">
+      <div class="service-num">03</div>
+      <div class="service-icon-wrap">🪒</div>
+      <div class="service-name">Hot Towel Shave</div>
+      <p class="service-desc">Traditional straight razor shave with hot towel ritual. The classic barbershop experience, elevated.</p>
+      <div class="service-footer">
+        <div>
+          <div class="service-price">GH₵35</div>
+          <div class="service-dur">~40 minutes</div>
+        </div>
+        <a href="https://wa.me/233592349968?text=I'd%20like%20to%20book%20a%20Hot%20Towel%20Shave%20please." class="service-book" target="_blank">Book Now →</a>
+      </div>
+    </div>
+
+    <div class="service-item">
+      <div class="service-num">04</div>
+      <div class="service-icon-wrap">✦</div>
+      <div class="service-name">Beard Sculpt</div>
+      <p class="service-desc">Expert beard shaping and line work, perfectly contoured to your facial structure.</p>
+      <div class="service-footer">
+        <div>
+          <div class="service-price">GH₵25</div>
+          <div class="service-dur">~20 minutes</div>
+        </div>
+        <a href="https://wa.me/233592349968?text=I'd%20like%20to%20book%20a%20Beard%20Sculpt%20please." class="service-book" target="_blank">Book Now →</a>
+      </div>
+    </div>
+
+    <div class="service-item">
+      <div class="service-num">05</div>
+      <div class="service-icon-wrap">👑</div>
+      <div class="service-name">Full Package</div>
+      <p class="service-desc">Complete grooming session — haircut plus beard trim. Our most popular service for the discerning gentleman.</p>
+      <div class="service-footer">
+        <div>
+          <div class="service-price">GH₵70</div>
+          <div class="service-dur">~60 minutes</div>
+        </div>
+        <a href="https://wa.me/233592349968?text=I'd%20like%20to%20book%20the%20Full%20Package%20please." class="service-book" target="_blank">Book Now →</a>
+      </div>
+    </div>
+
+    <div class="service-item">
+      <div class="service-num">06</div>
+      <div class="service-icon-wrap">🧒</div>
+      <div class="service-name">Kids' Cut</div>
+      <p class="service-desc">Patient, friendly cuts for young clients. Any style — we make the experience comfortable and fun.</p>
+      <div class="service-footer">
+        <div>
+          <div class="service-price">GH₵30</div>
+          <div class="service-dur">~25 minutes</div>
+        </div>
+        <a href="https://wa.me/233592349968?text=I'd%20like%20to%20book%20a%20Kids%20Cut%20please." class="service-book" target="_blank">Book Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="booking" id="booking">
+  <div class="booking-img">
+    <img src="https://images.unsplash.com/photo-1596728325488-58c87691e9af?w=900&q=85&fit=crop" alt="Barber shop booking" loading="lazy">
+  </div>
+  <div class="booking-content">
+    <div class="eyebrow"><div class="eyebrow-line"></div><span>Book an Appointment</span></div>
+    <h2 class="booking-title">
+      Reserve Your
+      <strong><em>Chair Today</em></strong>
+    </h2>
+    <p class="booking-text">
+      Skip the queue. All appointments are handled directly through WhatsApp — message us your preferred day, time, and service, and we'll confirm within minutes.
+    </p>
+    <a href="https://wa.me/233592349968?text=Hi%20The%20Sharp%20Cut!%20I'd%20like%20to%20book%20an%20appointment.%0A%0AService:%20%0APreferred%20Date:%20%0APreferred%20Time:" class="wa-btn" target="_blank">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Message Us on WhatsApp
+    </a>
+    <p class="booking-note">📱 Opens WhatsApp with a pre-filled message ready to send</p>
+  </div>
+</section>
+
+<!-- STYLES SHOWCASE -->
+<section class="styles" id="styles">
+  <div class="styles-header">
+    <div class="eyebrow"><div class="eyebrow-line"></div><span>Style Gallery</span></div>
+    <h2 class="section-title" style="margin-top:0.5rem">Cut <em>Styles</em> We Master</h2>
+  </div>
+  <div class="styles-grid">
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=500&q=85&fit=crop&crop=top" alt="Skin Fade" loading="lazy">
+      <div class="style-card-info">
+        <div class="style-card-sub">Style 01</div>
+        <div class="style-card-name">Skin Fade</div>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=500&q=85&fit=crop&crop=top" alt="Taper Cut" loading="lazy">
+      <div class="style-card-info">
+        <div class="style-card-sub">Style 02</div>
+        <div class="style-card-name">Classic Taper</div>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1622287162716-f311baa1a2b8?w=500&q=85&fit=crop&crop=top" alt="Beard & Cut" loading="lazy">
+      <div class="style-card-info">
+        <div class="style-card-sub">Style 03</div>
+        <div class="style-card-name">Beard & Cut</div>
+      </div>
+    </div>
+    <div class="style-card">
+      <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=500&q=85&fit=crop&crop=top" alt="Modern Quiff" loading="lazy">
+      <div class="style-card-info">
+        <div class="style-card-sub">Style 04</div>
+        <div class="style-card-name">Modern Clean</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why">
+  <div>
+    <div class="eyebrow"><div class="eyebrow-line"></div><span>Why Choose Us</span></div>
+    <h2 class="section-title" style="margin-top:0.5rem">The Sharp Cut <em>Promise</em></h2>
+    <div class="why-features">
+      <div class="why-item">
+        <div class="why-num">01</div>
+        <div>
+          <div class="why-title">Precision Every Single Time</div>
+          <p class="why-text">We never rush. Every client receives full attention — clean lines, sharp fades, and results that last.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">02</div>
+        <div>
+          <div class="why-title">WhatsApp Booking — Instantly</div>
+          <p class="why-text">No apps, no waiting on hold. Text us your preferred slot and we confirm right away. Simple as that.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">03</div>
+        <div>
+          <div class="why-title">Premium Products Only</div>
+          <p class="why-text">We use professional-grade grooming products that are gentle on skin and keep you looking sharp longer.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">04</div>
+        <div>
+          <div class="why-title">A Space You'll Love</div>
+          <p class="why-text">From your first visit, you're treated like family. Relax in a clean, welcoming, professional environment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="why-visual">
+    <div class="why-img-wrap">
+      <img src="https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?w=700&q=85&fit=crop" alt="Barbershop interior" loading="lazy">
+    </div>
+    <div class="why-badge">
+      <div class="why-badge-num">10+</div>
+      <div class="why-badge-label">Years of<br>Excellence</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="eyebrow"><div class="eyebrow-line"></div><span>Client Words</span></div>
+  <h2 class="section-title" style="margin-top:0.5rem">What Our <em>Clients Say</em></h2>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="testimonial-open">"</div>
+      <p class="testimonial-quote">Best barbershop I've been to in years. The fade was immaculate — I walked out feeling like a new person. Will definitely be back.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">KA</div>
+        <div>
+          <div class="testimonial-name">Kwame Asante</div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-open">"</div>
+      <p class="testimonial-quote">Booked through WhatsApp and got a reply in 5 minutes. The experience from start to finish was top tier. Professional and clean.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">EO</div>
+        <div>
+          <div class="testimonial-name">Emmanuel Osei</div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-open">"</div>
+      <p class="testimonial-quote">Brought my son here for the first time and he loved it. Patient, skilled, and the cut looked amazing. This is our go-to shop now.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">AB</div>
+        <div>
+          <div class="testimonial-name">Akosua Boateng</div>
+          <div class="testimonial-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS -->
+<section class="hours" id="hours">
+  <div>
+    <div class="eyebrow"><div class="eyebrow-line"></div><span>Opening Hours</span></div>
+    <h2 class="section-title" style="margin-top:0.5rem">When We're <em>Open</em></h2>
+    <div class="hours-table">
+      <div class="hours-row">
+        <span class="hours-day">Monday – Friday</span>
+        <span class="hours-time">8:00 AM – 8:00 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Saturday</span>
+        <span class="hours-time">8:00 AM – 6:00 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Sunday</span>
+        <span class="hours-closed">Closed</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="eyebrow"><div class="eyebrow-line"></div><span>Contact & Location</span></div>
+    <h2 class="section-title" style="margin-top:0.5rem">Find <em>Us</em></h2>
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Address</div>
+          <div class="contact-val">Your Street, City<br>Ghana</div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📱</div>
+        <div>
+          <div class="contact-label">WhatsApp / Phone</div>
+          <div class="contact-val"><a href="https://wa.me/233592349968" target="_blank">0592349968</a></div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">💬</div>
+        <div>
+          <div class="contact-label">Appointments</div>
+          <div class="contact-val">WhatsApp bookings only</div>
+        </div>
+      </div>
+    </div>
+    <a href="https://wa.me/233592349968?text=Hi%20The%20Sharp%20Cut!%20I'd%20like%20to%20book%20an%20appointment." class="btn-gold" style="margin-top:2rem;display:inline-flex" target="_blank">
+      📲 Book Your Appointment
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">✦ The Sharp Cut</div>
+      <p class="footer-tagline">Premium barbershop services delivered with precision and care — every single visit.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Navigation</div>
+      <ul class="footer-links">
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#services">Services & Pricing</a></li>
+        <li><a href="#styles">Style Inspiration</a></li>
+        <li><a href="#hours">Hours & Location</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Book Now</div>
+      <p style="font-size:0.82rem;color:var(--muted);line-height:1.8;margin-bottom:0.5rem;font-weight:300">All appointments via WhatsApp. We reply fast.</p>
+      <a href="https://wa.me/233592349968?text=Hi!%20I'd%20like%20to%20book%20an%20appointment." class="footer-wa" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        0592349968
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 The Sharp Cut Barbershop. All rights reserved.</p>
+    <p class="footer-credit">Professional Barbershop · Ghana</p>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a href="https://wa.me/233592349968?text=Hi%20The%20Sharp%20Cut!%20I'd%20like%20to%20book%20an%20appointment." class="float-wa" target="_blank">
+  <div class="float-wa-label">Book via WhatsApp</div>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx+'px';cursor.style.top=my+'px';
+  });
+  function animateRing(){
+    rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Nav scroll
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{
+    nav.classList.toggle('scrolled',window.scrollY>60);
+  });
+
+  // Intersection Observer for fade-in
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.style.opacity='1';
+        e.target.style.transform='translateY(0)';
+      }
+    });
+  },{threshold:0.1});
+
+  document.querySelectorAll('.gallery-item,.service-item,.style-card,.why-item,.testimonial,.contact-card').forEach(el=>{
+    el.style.opacity='0';
+    el.style.transform='translateY(24px)';
+    el.style.transition='opacity 0.7s ease, transform 0.7s ease';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
